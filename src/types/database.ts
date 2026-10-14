@@ -1,12 +1,12 @@
 // Handskrivna typer som speglar supabase/migrations/0001_init.sql.
 // Kan ersättas med: npx supabase gen types typescript --project-id <id>
 
-export type ThemeMode = 'light' | 'dark' | 'auto';
+export type Theme = 'light' | 'dark' | 'auto';
 export type MemberStatus = 'pending' | 'active' | 'paused';
-export type AvatarEmoji = '🦊' | '🐷' | '🐸' | '🐥' | '🐙' | '🐬' | '🦉' | '🦄';
+export type Avatar = '🦊' | '🐷' | '🐸' | '🐥' | '🐙' | '🐬' | '🦉' | '🦄';
 export type ChoreWeight = 1 | 2 | 4 | 6 | 8;
 
-export const AVATARS: readonly AvatarEmoji[] = ['🦊', '🐷', '🐸', '🐥', '🐙', '🐬', '🦉', '🦄'];
+export const AVATARS: readonly Avatar[] = ['🦊', '🐷', '🐸', '🐥', '🐙', '🐬', '🦉', '🦄'];
 export const CHORE_WEIGHTS: readonly ChoreWeight[] = [1, 2, 4, 6, 8];
 
 type Table<Row, Required extends keyof Row = never> = {
@@ -16,10 +16,10 @@ type Table<Row, Required extends keyof Row = never> = {
   Relationships: [];
 };
 
-export type Profile = { id: string; name: string; theme: ThemeMode; created_at: string }
+export type Profile = { id: string; name: string; theme: Theme; created_at: string }
 export type Household = { id: string; name: string; join_code: string; created_by: string | null; created_at: string }
 export type HouseholdMember = {
-  id: string; household_id: string; user_id: string; avatar: AvatarEmoji; avatar_color: string;
+  id: string; household_id: string; user_id: string; avatar: Avatar; avatar_color: string;
   is_owner: boolean; status: MemberStatus; created_at: string;
 }
 export type PausePeriod = { id: string; member_id: string; starts_at: string; ends_at: string | null }
@@ -49,14 +49,18 @@ export type Database = {
     };
     Views: { [_ in never]: never };
     Functions: {
-      create_household: { Args: { p_name: string; p_avatar: AvatarEmoji; p_color?: string }; Returns: Household };
-      request_join: { Args: { p_code: string; p_avatar: AvatarEmoji; p_color?: string }; Returns: HouseholdMember };
-      taken_avatars: { Args: { p_code: string }; Returns: AvatarEmoji[] };
+      create_household: { Args: { p_name: string; p_avatar: Avatar; p_color?: string }; Returns: Household };
+      request_join: { Args: { p_code: string; p_avatar: Avatar; p_color?: string }; Returns: HouseholdMember };
+      taken_avatars: { Args: { p_code: string }; Returns: Avatar[] };
       generate_join_code: { Args: Record<string, never>; Returns: string };
       is_member: { Args: { hid: string }; Returns: boolean };
       is_owner: { Args: { hid: string }; Returns: boolean };
     };
-    Enums: { theme_mode: ThemeMode; member_status: MemberStatus; avatar_emoji: AvatarEmoji };
+    Enums: { theme_mode: Theme; member_status: MemberStatus; avatar_emoji: Avatar };
     CompositeTypes: { [_ in never]: never };
   };
 };
+
+/** Alias för läsbarhet. */
+export type ThemeMode = Theme;
+export type AvatarEmoji = Avatar;

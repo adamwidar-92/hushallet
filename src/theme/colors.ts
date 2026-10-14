@@ -9,6 +9,8 @@ export const colors = {
   overdue: '#CD5D6F',
   onOverdue: '#FFFFFF',
   border: '#E0E0E0',
+  /** Bakgrund på statistikvyerna. */
+  statsBackground: '#FCFCFC',
 } as const;
 
 export const shadow = {
@@ -26,6 +28,11 @@ export const typography = {
   taskEmoji: { fontSize: 22 },
   small: { fontSize: 14, fontWeight: '500' },
   caption: { fontSize: 12, fontWeight: '400' },
+  /** "Huge" – emoji i stora cirkeldiagrammet. */
+  huge: { fontSize: 32, fontWeight: '500' },
 } as const;
 
 export const AVATAR_COLORS = ['#F4A261', '#E76F51', '#2A9D8F', '#8AB17D', '#E9C46A', '#6D597A', '#457B9D', '#CD5D6F'] as const;
+
+/** Tårtbitsfärger i statistikens cirkeldiagram (Figma: Person 1-3). Lägg till fler vid behov. */
+export const CHART_COLORS = ['#FF7E46', '#CD5D6F', '#FCD933', '#2A9D8F', '#457B9D', '#8AB17D', '#6D597A', '#E9C46A'] as const;
