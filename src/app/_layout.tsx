@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
-import { colors } from '@/theme/colors';
+import { colors } from "@/theme/colors";
 
 export default function RootLayout() {
   return (
@@ -12,8 +12,9 @@ export default function RootLayout() {
           headerTintColor: colors.text,
           headerStyle: { backgroundColor: colors.surface },
           contentStyle: { backgroundColor: colors.background },
-        }}>
-        <Stack.Screen name="index" options={{ title: 'Hushållet' }} />
+        }}
+      >
+        <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </>
   );
