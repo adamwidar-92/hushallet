@@ -1,21 +1,33 @@
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 
-import { mockChores } from "@/mock/mockData";
-import type { Chore } from "@/types/database";
+import { mockChores, mockCompletions, mockMembers } from "@/mock/mockData";
+import type { Chore, ChoreCompletion, HouseholdMember } from "@/types/database";
+
+type ChoresData = {
+  chores: Chore[];
+  completions: ChoreCompletion[];
+  members: HouseholdMember[];
+};
+
+const empty: ChoresData = { chores: [], completions: [], members: [] };
 
 /** Byts mot Supabase när hushåll/login (#13, #16) finns. */
-async function fetchChores(): Promise<Chore[]> {
-  return mockChores.filter((c) => !c.archived);
+async function fetchChoresData(): Promise<ChoresData> {
+  return {
+    chores: mockChores.filter((c) => !c.archived),
+    completions: mockCompletions,
+    members: mockMembers,
+  };
 }
 
 export function useChores() {
-  const [chores, setChores] = useState<Chore[]>([]);
+  const [data, setData] = useState<ChoresData>(empty);
   const [refreshing, setRefreshing] = useState(false);
 
   const refresh = useCallback(async () => {
     setRefreshing(true);
-    setChores(await fetchChores());
+    setData(await fetchChoresData());
     setRefreshing(false);
   }, []);
 
@@ -26,5 +38,5 @@ export function useChores() {
     }, [refresh]),
   );
 
-  return { chores, refreshing, refresh };
+  return { ...data, refreshing, refresh };
 }

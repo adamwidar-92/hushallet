@@ -1,12 +1,13 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-
 import { NavigationBar } from "@/components/NavigationBar";
 import { TaskCard } from "@/components/TaskCard";
+import { TaskStatus } from "@/components/TaskStatus";
+import { getChoreStatus } from "@/features/chores/status";
 import { useChores } from "@/features/chores/useChores";
 import { colors, typography } from "@/theme/colors";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function TodayScreen() {
-  const { chores, refreshing, refresh } = useChores();
+  const { chores, completions, members, refreshing, refresh } = useChores();
 
   return (
     <View style={styles.container}>
@@ -14,7 +15,14 @@ export default function TodayScreen() {
       <FlatList
         data={chores}
         keyExtractor={(c) => c.id}
-        renderItem={({ item }) => <TaskCard name={item.name} />}
+        renderItem={({ item }) => (
+          <TaskCard
+            name={item.name}
+            right={
+              <TaskStatus {...getChoreStatus(item, completions, members)} />
+            }
+          />
+        )}
         contentContainerStyle={styles.list}
         refreshing={refreshing}
         onRefresh={refresh}
