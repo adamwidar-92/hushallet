@@ -1,21 +1,40 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
-import { colors, typography } from '@/theme/colors';
+import { NavigationBar } from "@/components/NavigationBar";
+import { TaskCard } from "@/components/TaskCard";
+import { useChores } from "@/features/chores/useChores";
+import { colors, typography } from "@/theme/colors";
 
-/** Platshållare. Appen byggs upp via GitHub-issues – se README. */
-export default function Index() {
+export default function TodayScreen() {
+  const { chores, refreshing, refresh } = useChores();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hushållet</Text>
-      <Text style={styles.text}>
-        Här börjar appen. Välj en issue på GitHub (adamwidar-92/hushallet/issues) och bygg vidare enligt docs/DESIGN.md.
-      </Text>
+      <NavigationBar title="Hushållet" subtitle="idag" />
+      <FlatList
+        data={chores}
+        keyExtractor={(c) => c.id}
+        renderItem={({ item }) => <TaskCard name={item.name} />}
+        contentContainerStyle={styles.list}
+        refreshing={refreshing}
+        onRefresh={refresh}
+        ListEmptyComponent={
+          <Text style={styles.empty}>
+            Inga sysslor än. En ägare kan lägga till sysslor.
+          </Text>
+        }
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
-  title: { ...typography.title, fontSize: 32, color: colors.text },
-  text: { ...typography.small, color: colors.textMuted, textAlign: 'center' },
+  container: { flex: 1, backgroundColor: colors.background },
+  list: { padding: 12, gap: 12 },
+  empty: {
+    ...typography.small,
+    color: colors.textMuted,
+    textAlign: "center",
+    marginTop: 24,
+  },
 });
