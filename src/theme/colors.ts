@@ -9,6 +9,9 @@ export const colors = {
   overdue: '#CD5D6F',
   onOverdue: '#FFFFFF',
   border: '#E0E0E0',
+  primary: '#333333',
+  onPrimary: '#FFFFFF',
+  danger: '#CD5D6F',
   /** Bakgrund på statistikvyerna. */
   statsBackground: '#FCFCFC',
 } as const;
