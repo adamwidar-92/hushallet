@@ -24,42 +24,48 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userId }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const loadProfile = async () => {
+      try {
+        setLoading(true);
+
+        let targetId = userId;
+        if (!targetId) {
+          const { data: authData } = await supabase.auth.getUser();
+          targetId = authData?.user?.id;
+        }
+
+        if (!targetId) {
+          if (isMounted) setLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("name")
+          .eq("id", targetId)
+          .single();
+
+        if (error) throw error;
+
+        if (data?.name && isMounted) {
+          setName(data.name);
+          setInitialName(data.name);
+        }
+      } catch {
+        // Fallback vid fel eller om användaren saknar sparad profil
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
     loadProfile();
+
+    return () => {
+      isMounted = false;
+    };
   }, [userId]);
-
-  const loadProfile = async () => {
-    try {
-      setLoading(true);
-
-      let targetId = userId;
-      if (!targetId) {
-        const { data: authData } = await supabase.auth.getUser();
-        targetId = authData?.user?.id;
-      }
-
-      if (!targetId) {
-        setLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("name")
-        .eq("id", targetId)
-        .single();
-
-      if (error) throw error;
-
-      if (data?.name) {
-        setName(data.name);
-        setInitialName(data.name);
-      }
-    } catch {
-      // Lämnar fältet tomt om profilen inte kunde hämtas
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSave = async () => {
     setSuccessMessage(false);
