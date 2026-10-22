@@ -4,6 +4,7 @@ import { TaskStatus } from "@/components/TaskStatus";
 import { getChoreStatus } from "@/features/chores/status";
 import { useChores } from "@/features/chores/useChores";
 import { colors, typography } from "@/theme/colors";
+import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function TodayScreen() {
@@ -15,9 +16,11 @@ export default function TodayScreen() {
       <FlatList
         data={chores}
         keyExtractor={(c) => c.id}
+        extraData={completions}
         renderItem={({ item }) => (
           <TaskCard
             name={item.name}
+            onPress={() => router.push(`/chore/${item.id}`)}
             right={
               <TaskStatus {...getChoreStatus(item, completions, members)} />
             }
