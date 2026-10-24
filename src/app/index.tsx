@@ -12,7 +12,11 @@ export default function TodayScreen() {
 
   return (
     <View style={styles.container}>
-      <NavigationBar title="Hushållet" subtitle="idag" />
+      <NavigationBar
+        title="Hushållet"
+        subtitle="idag"
+        onNext={() => router.push("/statistics")}
+      />
       <FlatList
         data={chores}
         keyExtractor={(c) => c.id}
