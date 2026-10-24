@@ -1,14 +1,15 @@
 import { router, Stack } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import { NavigationBar } from "@/components/NavigationBar";
-import { PieChart } from "@/components/PieChart";
+import { StatChart } from "@/components/StatChart";
 import { useChores } from "@/features/chores/useChores";
-import { getDistribution } from "@/features/statistics/calc";
+import { getStatistics } from "@/features/statistics/calc";
 import { colors } from "@/theme/colors";
 
 export default function StatisticsScreen() {
-  const { completions, members } = useChores();
+  const { chores, completions, members } = useChores();
+  const { total, perChore } = getStatistics(chores, completions, members);
 
   return (
     <View style={styles.container}>
@@ -18,14 +19,20 @@ export default function StatisticsScreen() {
         subtitle="statistik"
         onPrev={() => router.back()}
       />
-      <View style={styles.body}>
-        <PieChart slices={getDistribution(completions, members)} size={190} />
-      </View>
+      <ScrollView contentContainerStyle={styles.body}>
+        <StatChart slices={total} label="Totalt" large />
+        <View style={styles.grid}>
+          {perChore.map(({ chore, slices }) => (
+            <StatChart key={chore.id} slices={slices} label={chore.name} />
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.statsBackground },
-  body: { alignItems: "center", padding: 12 },
+  body: { padding: 12 },
+  grid: { flexDirection: "row", flexWrap: "wrap" },
 });
