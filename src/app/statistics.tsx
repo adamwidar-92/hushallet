@@ -1,22 +1,35 @@
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { NavigationBar } from "@/components/NavigationBar";
 import { StatChart } from "@/components/StatChart";
 import { useChores } from "@/features/chores/useChores";
 import { getStatistics } from "@/features/statistics/calc";
+import {
+  filterByPeriod,
+  getPeriod,
+  type PeriodKey,
+} from "@/features/statistics/period";
 import { colors } from "@/theme/colors";
 
 export default function StatisticsScreen() {
+  const { period = "currentWeek" } = useLocalSearchParams<{
+    period?: PeriodKey;
+  }>();
   const { chores, completions, members } = useChores();
-  const { total, perChore } = getStatistics(chores, completions, members);
+  const current = getPeriod(period);
+  const { total, perChore } = getStatistics(
+    chores,
+    filterByPeriod(completions, current),
+    members,
+  );
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <NavigationBar
         title="Hushållet"
-        subtitle="statistik"
+        subtitle={current.label}
         onPrev={() => router.back()}
       />
       <ScrollView contentContainerStyle={styles.body}>
