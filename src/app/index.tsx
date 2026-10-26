@@ -3,6 +3,7 @@ import { TaskCard } from "@/components/TaskCard";
 import { TaskStatus } from "@/components/TaskStatus";
 import { getChoreStatus } from "@/features/chores/status";
 import { useChores } from "@/features/chores/useChores";
+import { useHousehold } from "@/features/household/useHousehold";
 import { filterByPeriod, getPeriod } from "@/features/statistics/period";
 import { colors, typography } from "@/theme/colors";
 import { router } from "expo-router";
@@ -10,15 +11,17 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function TodayScreen() {
   const { chores, completions, members, refreshing, refresh } = useChores();
+  const { household } = useHousehold();
   const hasWeekStats =
     filterByPeriod(completions, getPeriod("currentWeek")).length > 0;
 
   return (
     <View style={styles.container}>
       <NavigationBar
-        title="Hushållet"
+        title={household?.name ?? "Hushållet"}
         subtitle="idag"
         onNext={hasWeekStats ? () => router.push("/statistics") : undefined}
+        onTitlePress={() => router.push("/household")}
       />
       <FlatList
         data={chores}
