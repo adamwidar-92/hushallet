@@ -1,20 +1,47 @@
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-
 import { colors } from '@/theme/colors';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { Stack, useRouter, useSegments } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+
+function InitialLayout() {
+  const { session, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!session && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (session && inAuthGroup) {
+      router.replace('/(tabs)');
+    }
+  }, [session, isLoading, segments]);
+
+  if (isLoading) {
+    return null; 
+  }
+
+  return (
+    <Stack
+      screenOptions={{
+        headerTintColor: colors.text,
+        headerStyle: { backgroundColor: colors.surface },
+        contentStyle: { backgroundColor: colors.background },
+      }}>
+      <Stack.Screen name="index" options={{ title: 'Hushållet' }} />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   return (
-    <>
+    <AuthProvider>
       <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerTintColor: colors.text,
-          headerStyle: { backgroundColor: colors.surface },
-          contentStyle: { backgroundColor: colors.background },
-        }}>
-        <Stack.Screen name="index" options={{ title: 'Hushållet' }} />
-      </Stack>
-    </>
+      <InitialLayout />
+    </AuthProvider>
   );
 }
