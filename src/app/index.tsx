@@ -21,6 +21,7 @@ export default function TodayScreen() {
         title={household?.name ?? "Hushållet"}
         subtitle="idag"
         onNext={hasWeekStats ? () => router.push("/statistics") : undefined}
+        onTitlePress={() => router.push("/household")}
       />
       <FlatList
         data={chores}

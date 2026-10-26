@@ -9,14 +9,17 @@ type Props = {
   subtitle: string;
   onPrev?: () => void;
   onNext?: () => void;
+  onTitlePress?: () => void;
 };
 
-export function NavigationBar({ title, subtitle, onPrev, onNext }: Props) {
+export function NavigationBar({ title, subtitle, onPrev, onNext, onTitlePress }: Props) {
   const { top } = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
-      <Text style={styles.title}>{title}</Text>
+      <Pressable onPress={onTitlePress} disabled={!onTitlePress}>
+        <Text style={styles.title}>{title}</Text>
+      </Pressable>
       <View style={styles.row}>
         <Arrow name="chevron-left" onPress={onPrev} />
         <Text style={styles.subtitle}>{subtitle}</Text>

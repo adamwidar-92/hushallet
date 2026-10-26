@@ -1,15 +1,17 @@
-import { fetchHousehold, renameHousehold } from "@/features/household/api";
+import { fetchHousehold, fetchIsOwner, renameHousehold } from "@/features/household/api";
 import type { Household } from "@/types/database";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 
-export function useHousehold(){
+export function useHousehold() {
     const [household, setHousehold] = useState<Household | null>(null);
     const [refreshing, setRefreshing] = useState(false);
+    const [isOwner, setIsOwner] = useState(false);
 
     const refresh = useCallback(async () => {
         setRefreshing(true);
         setHousehold(await fetchHousehold());
+        setIsOwner(await fetchIsOwner());
         setRefreshing(false);
     }, []);
 
@@ -24,5 +26,5 @@ export function useHousehold(){
         }, [refresh]),
     );
 
-    return {household, refreshing, refresh, rename};
+    return { household, isOwner, refreshing, refresh, rename };
 }
