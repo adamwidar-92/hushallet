@@ -1,23 +1,10 @@
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { colors } from '../theme/colors';
 
 function InitialLayout() {
   const { session, isLoading } = useAuth();
-  const segments = useSegments() as string[];
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoading) return;
-    const inAuthGroup = segments.includes('(auth)');
-    if (!session && !inAuthGroup) {
-      router.replace('/(auth)/login');
-    } else if (session && inAuthGroup) {
-      router.replace('/(tabs)');
-    }
-  }, [session, isLoading, segments]);
 
   if (isLoading) {
     return null;
@@ -26,11 +13,17 @@ function InitialLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTintColor: colors.text,
-        headerStyle: { backgroundColor: colors.surface },
+        headerShown: false,
         contentStyle: { backgroundColor: colors.background },
       }}>
-      <Stack.Screen name="index" options={{ title: 'Hushållet' }} />
+      <Stack.Protected guard={!!session}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!session}>
+        <Stack.Screen name="(auth)/login" />
+        <Stack.Screen name="(auth)/register" />
+      </Stack.Protected>
     </Stack>
   );
 }

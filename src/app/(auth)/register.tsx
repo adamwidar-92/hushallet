@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { colors } from '../../theme/colors';
 
 export default function RegisterScreen() {
+  const [name, setName] = useState(''); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -13,8 +14,12 @@ export default function RegisterScreen() {
   const router = useRouter();
 
   const handleRegister = async () => {
-    if (!email || !password || !confirmPassword) {
+    if (!name.trim() || !email || !password || !confirmPassword) {
       Alert.alert('Fel', 'Fyll i alla fält.');
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert('Fel', 'Lösenordet är för kort (minst 6 tecken).');
       return;
     }
     if (password !== confirmPassword) {
@@ -22,12 +27,12 @@ export default function RegisterScreen() {
       return;
     }
     setLoading(true);
-    const { error } = await signUp(email, password);
+    const { error, needsConfirmation } = await signUp(email, password, name.trim());
     setLoading(false);
     if (error) {
-      Alert.alert('Registrering misslyckades', error.message);
-    } else {
-      Alert.alert('Konto skapat!', 'Ett bekräftelsemail har skickats till din e-post.');
+      Alert.alert('Registrering misslyckades', error);
+    } else if (needsConfirmation) {
+      Alert.alert('Konto skapat!', 'Bekräfta din e-post och logga sedan in.');
       router.replace('/(auth)/login' as any);
     }
   };
@@ -36,6 +41,14 @@ export default function RegisterScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Skapa konto</Text>
       <Text style={styles.subtitle}>Registrera dig för att komma igång</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Namn"
+        placeholderTextColor="#999"
+        value={name}
+        onChangeText={setName}
+      />
 
       <TextInput
         style={styles.input}

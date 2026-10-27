@@ -20,7 +20,7 @@ export default function LoginScreen() {
     const { error } = await signIn(email, password);
     setLoading(false);
     if (error) {
-      Alert.alert('Inloggning misslyckades', error); 
+      Alert.alert('Inloggning misslyckades', error);
     }
   };
 
@@ -56,7 +56,7 @@ export default function LoginScreen() {
         )}
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/register')}>
+      <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/(auth)/register')}>
         <Text style={styles.linkText}>Har du inget konto? Registrera dig</Text>
       </TouchableOpacity>
     </View>
