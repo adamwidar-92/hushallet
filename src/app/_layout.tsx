@@ -1,19 +1,17 @@
-import { colors } from '@/theme/colors';
-import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { colors } from '../theme/colors';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
 function InitialLayout() {
   const { session, isLoading } = useAuth();
-  const segments = useSegments();
+  const segments = useSegments() as string[];
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
-
-    const inAuthGroup = segments[0] === '(auth)';
-
+    const inAuthGroup = segments.includes('(auth)');
     if (!session && !inAuthGroup) {
       router.replace('/(auth)/login');
     } else if (session && inAuthGroup) {
@@ -22,7 +20,7 @@ function InitialLayout() {
   }, [session, isLoading, segments]);
 
   if (isLoading) {
-    return null; 
+    return null;
   }
 
   return (
