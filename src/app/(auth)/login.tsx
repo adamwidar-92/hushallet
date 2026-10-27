@@ -1,115 +1,109 @@
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../../context/AuthContext';
-import { colors } from '../../theme/colors';
+import { PillButton } from "@/components/PillButton";
+import { TextField } from "@/components/TextField";
+import { useAuth } from "@/context/AuthContext";
+import { colors, typography } from "@/theme/colors";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from "react-native";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const router = useRouter();
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Fel', 'Fyll i både e-post och lösenord.');
+    if (!email.trim() || !password) {
+      setError("Fyll i både e-post och lösenord.");
       return;
     }
+    setError(undefined);
     setLoading(true);
-    const { error } = await signIn(email, password);
+    const { error: signInError } = await signIn(email.trim(), password);
     setLoading(false);
-    if (error) {
-      Alert.alert('Inloggning misslyckades', error);
+    if (signInError) {
+      setError(signInError);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Välkommen tillbaka</Text>
-      <Text style={styles.subtitle}>Logga in för att fortsätta</Text>
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Image
+          source={require("../../../assets/images/logo.png")}
+          style={styles.logo}
+          contentFit="contain"
+        />
+        <Text style={styles.title}>Hushållet</Text>
+        <Text style={styles.subtitle}>Logga in</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="E-postadress"
-        placeholderTextColor="#999"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
+        <TextField
+          placeholder="E-post"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          autoComplete="email"
+          keyboardType="email-address"
+        />
+        <TextField
+          placeholder="Lösenord"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          autoCapitalize="none"
+          error={error}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Lösenord"
-        placeholderTextColor="#999"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <PillButton
+          title="Logga in"
+          icon="log-in"
+          onPress={handleLogin}
+          disabled={loading}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#FFF" />
-        ) : (
-          <Text style={styles.buttonText}>Logga in</Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/(auth)/register')}>
-        <Text style={styles.linkText}>Har du inget konto? Registrera dig</Text>
-      </TouchableOpacity>
-    </View>
+        <Pressable
+          style={styles.link}
+          onPress={() => router.push("/(auth)/register")}
+        >
+          <Text style={styles.linkText}>Har du inget konto? Registrera dig</Text>
+        </Pressable>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1, backgroundColor: colors.background },
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 24,
-    backgroundColor: colors.background,
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 12,
+    gap: 12,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
+  logo: { width: 96, height: 96, alignSelf: "center", borderRadius: 20 },
+  title: { ...typography.huge, color: colors.text, textAlign: "center" },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 32,
-    textAlign: 'center',
+    ...typography.subtitle,
+    color: colors.textMuted,
+    textAlign: "center",
+    marginBottom: 12,
   },
-  input: {
-    backgroundColor: colors.surface,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#DDD',
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkButton: {
-    marginTop: 24,
-    alignItems: 'center',
-  },
-  linkText: {
-    color: '#007AFF',
-    fontSize: 14,
-  },
+  link: { alignItems: "center", paddingVertical: 12 },
+  linkText: { ...typography.small, color: colors.text, textDecorationLine: "underline" },
 });
