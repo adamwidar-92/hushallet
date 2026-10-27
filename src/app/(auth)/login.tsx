@@ -20,7 +20,7 @@ export default function LoginScreen() {
     const { error } = await signIn(email, password);
     setLoading(false);
     if (error) {
-      Alert.alert('Inloggning misslyckades', error.message);
+      Alert.alert('Inloggning misslyckades', error); 
     }
   };
 
