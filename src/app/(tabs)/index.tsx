@@ -1,9 +1,23 @@
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Huvudskärm</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>Välkommen hem!</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  text: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+});

@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { colors } from '../theme/colors';
+import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
+import { colors } from '../theme/colors';
 
 function InitialLayout() {
   const { session, isLoading } = useAuth();
