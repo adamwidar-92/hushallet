@@ -1,6 +1,8 @@
 import { NavigationBar } from "@/components/NavigationBar";
+import { PillButton } from "@/components/PillButton"; 
 import { TaskCard } from "@/components/TaskCard";
 import { TaskStatus } from "@/components/TaskStatus";
+import { useAuth } from "@/context/AuthContext"; 
 import { getChoreStatus } from "@/features/chores/status";
 import { useChores } from "@/features/chores/useChores";
 import { useHousehold } from "@/features/household/useHousehold";
@@ -10,6 +12,7 @@ import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function TodayScreen() {
+  const { signOut } = useAuth(); 
   const { chores, completions, members, refreshing, refresh } = useChores();
   const { household } = useHousehold();
   const hasWeekStats =
@@ -39,6 +42,9 @@ export default function TodayScreen() {
         contentContainerStyle={styles.list}
         refreshing={refreshing}
         onRefresh={refresh}
+        ListFooterComponent={
+          <PillButton title="Logga ut" icon="log-out" onPress={signOut} />
+        } 
         ListEmptyComponent={
           <Text style={styles.empty}>
             Inga sysslor än. En ägare kan lägga till sysslor.
