@@ -10,7 +10,8 @@ import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export default function TodayScreen() {
-  const { chores, completions, members, refreshing, refresh } = useChores();
+  const { chores, completions, members, error, refreshing, refresh } =
+    useChores();
   const { household } = useHousehold();
   const hasWeekStats =
     filterByPeriod(completions, getPeriod("currentWeek")).length > 0;
@@ -40,8 +41,9 @@ export default function TodayScreen() {
         refreshing={refreshing}
         onRefresh={refresh}
         ListEmptyComponent={
-          <Text style={styles.empty}>
-            Inga sysslor än. En ägare kan lägga till sysslor.
+          <Text style={[styles.empty, error && styles.error]}>
+            {error?.message ??
+              "Inga sysslor än. En ägare kan lägga till sysslor."}
           </Text>
         }
       />
@@ -58,4 +60,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 24,
   },
+  error: { color: colors.danger },
 });
