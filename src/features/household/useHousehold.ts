@@ -1,3 +1,4 @@
+import { useSelectedHousehold } from "@/context/HouseholdContext";
 import { fetchHousehold, fetchIsOwner, renameHousehold } from "@/features/household/api";
 import type { Household } from "@/types/database";
 import { useFocusEffect } from "expo-router";
@@ -7,18 +8,19 @@ export function useHousehold() {
     const [household, setHousehold] = useState<Household | null>(null);
     const [refreshing, setRefreshing] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
+    const { householdId } = useSelectedHousehold();
 
     const refresh = useCallback(async () => {
         setRefreshing(true);
-        setHousehold(await fetchHousehold());
-        setIsOwner(await fetchIsOwner());
+        setHousehold(await fetchHousehold(householdId));
+        setIsOwner(await fetchIsOwner(householdId));
         setRefreshing(false);
-    }, []);
+    }, [householdId]);
 
     const rename = useCallback(async (newName: string) => {
-        await renameHousehold(newName);
+        await renameHousehold(newName, householdId);
         await refresh();
-    }, [refresh]);
+    }, [householdId, refresh]);
 
     useFocusEffect(
         useCallback(() => {

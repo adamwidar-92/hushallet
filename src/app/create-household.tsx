@@ -1,6 +1,7 @@
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { PillButton } from "@/components/PillButton";
 import { TextField } from "@/components/TextField";
+import { useSelectedHousehold } from "@/context/HouseholdContext";
 import { createHousehold } from "@/features/household/api";
 import { AVATAR_COLORS, colors, shadow, typography } from "@/theme/colors";
 import type { Avatar, Household } from "@/types/database";
@@ -16,6 +17,7 @@ export default function CreateHouseholdScreen() {
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState(false);
     const [created, setCreated] = useState<Household | null>(null);
+    const { setHouseholdId } = useSelectedHousehold();
 
     const create = async () => {
         if (!avatar) {
@@ -42,7 +44,10 @@ export default function CreateHouseholdScreen() {
                     <Text style={styles.hint}>Dela koden med de du bor med.</Text>
                 </View>
                 <PillButton title="Kopiera kod" icon="copy" onPress={() => Clipboard.setStringAsync(created.join_code)} />
-                <PillButton title="Gå till hushållet" icon="home" variant="primary" onPress={() => router.replace("/")} />
+                <PillButton title="Gå till hushållet" icon="home" variant="primary" onPress={() => {
+                    setHouseholdId(created.id);
+                    router.replace("/");
+                }} />
             </View>
         );
     }

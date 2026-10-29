@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { HouseholdProvider } from "@/context/HouseholdContext";
 import { colors } from "@/theme/colors";
 
 function RootNavigator() {
@@ -54,8 +55,10 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <StatusBar style="dark" />
-        <RootNavigator />
+        <HouseholdProvider>
+          <StatusBar style="dark" />
+          <RootNavigator />
+        </HouseholdProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
