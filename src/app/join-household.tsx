@@ -63,30 +63,36 @@ export default function JoinHouseholdScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <TextField
-                label="Hushållets kod"
-                value={code}
-                onChangeText={onChangeCode}
-                placeholder="K7M2QX"
-                autoCapitalize="characters"
-                maxLength={6}
-            />
-            <AvatarPicker
-                selectedAvatar={avatar}
-                selectedColor={color}
-                onSelectAvatar={setAvatar}
-                onSelectColor={setColor}
-                takenAvatars={taken}
-            />
-            {error && <Text style={styles.error}>{error}</Text>}
-            <PillButton title="Gå med" icon="log-in" variant="primary" onPress={join} disabled={loading} />
-        </ScrollView>
+        <View style={styles.screen}>
+            <ScrollView contentContainerStyle={styles.container}>
+                <TextField
+                    label="Hushållets kod"
+                    value={code}
+                    onChangeText={onChangeCode}
+                    placeholder="K7M2QX"
+                    autoCapitalize="characters"
+                    maxLength={6}
+                />
+                <AvatarPicker
+                    selectedAvatar={avatar}
+                    selectedColor={color}
+                    onSelectAvatar={setAvatar}
+                    onSelectColor={setColor}
+                    takenAvatars={taken}
+                />
+                {error && <Text style={styles.error}>{error}</Text>}
+            </ScrollView>
+            <View style={styles.footer}>
+                <PillButton title="Gå med" icon="log-in" variant="primary" onPress={join} disabled={loading} />
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, padding: 12, gap: 12, backgroundColor: colors.background },
+    screen: { flex: 1, backgroundColor: colors.background },
+    container: { flexGrow: 1, padding: 16, gap: 12 },
+    footer: { padding: 16 },
     center: { flex: 1, padding: 24, gap: 16, alignItems: "center", justifyContent: "center", backgroundColor: colors.background },
     avatarCircle: { width: 96, height: 96, borderRadius: 48, alignItems: "center", justifyContent: "center" },
     avatar: { fontSize: 48 },

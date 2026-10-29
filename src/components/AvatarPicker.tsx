@@ -21,7 +21,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Välj avatar</Text>
-      <View style={styles.grid}>
+      <View style={[styles.grid, styles.card]}>
         {AVATARS.map((avatar) => {
           const isSelected = selectedAvatar === avatar;
           const isTaken = takenAvatars.includes(avatar);
@@ -35,9 +35,9 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
                 style={[
                   styles.avatarCircle,
                   isSelected && {
-                    backgroundColor: selectedColor,
-                    borderColor: colors.text,
-                    borderWidth: 2,
+                    backgroundColor: selectedColor + "33",
+                    borderColor: selectedColor,
+                    borderWidth: 3,
                   },
                   isTaken && styles.avatarDisabled,
                 ]}
@@ -93,19 +93,26 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
+  card: {
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: colors.surface,
+    ...shadow,
+  },
   itemWrapper: {
     width: "23%",
     alignItems: "center",
     marginBottom: 10,
   },
   avatarCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.surface,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 2,
+    borderColor: colors.border,
+    backgroundColor: colors.background,
     justifyContent: "center",
     alignItems: "center",
-    ...shadow,
   },
   avatarDisabled: {
     opacity: 0.3,
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
   },
   statusLabel: {
     fontSize: 11,
-    fontWeight: "500",
+    fontWeight: "700",
     color: colors.textMuted,
     marginTop: 4,
     height: 14,

@@ -53,22 +53,28 @@ export default function CreateHouseholdScreen() {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <TextField label="Hushållets namn" value={name} onChangeText={setName} placeholder="Familjen Andersson" />
-            <AvatarPicker
-                selectedAvatar={avatar}
-                selectedColor={color}
-                onSelectAvatar={setAvatar}
-                onSelectColor={setColor}
-            />
-            {error && <Text style={styles.error}>{error}</Text>}
-            <PillButton title="Skapa hushåll" icon="check" variant="primary" onPress={create} disabled={loading} />
-        </ScrollView>
+        <View style={styles.screen}>
+            <ScrollView contentContainerStyle={styles.container}>
+                <TextField label="Hushållets namn" value={name} onChangeText={setName} placeholder="Familjen Andersson" />
+                <AvatarPicker
+                    selectedAvatar={avatar}
+                    selectedColor={color}
+                    onSelectAvatar={setAvatar}
+                    onSelectColor={setColor}
+                />
+                {error && <Text style={styles.error}>{error}</Text>}
+            </ScrollView>
+            <View style={styles.footer}>
+                <PillButton title="Skapa hushåll" icon="check" variant="primary" onPress={create} disabled={loading} />
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, padding: 12, gap: 12, backgroundColor: colors.background },
+    screen: { flex: 1, backgroundColor: colors.background },
+    container: { flexGrow: 1, padding: 16, gap: 12 },
+    footer: { padding: 16 },
     card: { padding: 18, borderRadius: 10, backgroundColor: colors.surface, ...shadow },
     label: { ...typography.small, color: colors.textMuted },
     code: { fontSize: 32, fontWeight: "700", letterSpacing: 4, color: colors.text },
