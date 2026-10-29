@@ -24,7 +24,7 @@ export function TextField({ label, error, multiline, style, ...rest }: Props) {
 
 const styles = StyleSheet.create({
   container: { gap: 6 },
-  label: { ...typography.subtitle, color: colors.text },
+  label: { ...typography.small, color: colors.textMuted },
   input: {
     height: 55,
     paddingHorizontal: 18,

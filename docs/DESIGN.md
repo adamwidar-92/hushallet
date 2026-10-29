@@ -208,6 +208,17 @@ Följande behövs för kraven men finns inte i skisserna. Kravlistan säger att 
 | **Inställningar** | Kan slås ihop med Profil. | Profil 5 |
 | **Logga, appikon, splash** | Enkel symbol (t.ex. hus med bock) i `#CD5D6F`/`#FF7E46` på vit eller `#F2F2F2` bakgrund. | Kravlista 1 |
 
+### Avvikelser från Figma
+
+Det här skiljer sig fortfarande från skisserna och behöver godkännas av David:
+
+- **Ny logga.** Vi använder vår egen logga (huset med bock och djuren runt) i stället för det orangea huset i Figma, både på inloggningen, appikonen och splashen.
+- **Skapa hushåll.** Koden skapas av servern när hushållet sparas, så den visas efter att man tryckt på Skapa och inte i förväg som i skissen. Man väljer färg i en egen rad under avatarerna.
+- **Gå med.** Det finns inget kort som visar hushållets namn innan man gått med, och avatarerna har samma ring tills man väljer en.
+- **Mina hushåll.** Medlemsantalet räknar bara aktiva medlemmar.
+- **Dagsvyn.** En liten husikon uppe till vänster tar en tillbaka till Mina hushåll.
+- **Profil.** Bara namnet går att ändra än så länge.
+
 ### Godkända avvikelser
 
 | Datum | Avvikelse | Godkänd av |

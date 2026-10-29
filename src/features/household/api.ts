@@ -96,22 +96,37 @@ export async function requestJoin(code: string, avatar: Avatar, color: string): 
     return data;
 }
 
-export async function fetchMyHouseholds(): Promise<Household[]> {
+export type MyHousehold = Household & { memberCount: number; isOwner: boolean };
+
+export async function fetchMyHouseholds(): Promise<MyHousehold[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return [];
 
     const { data: members, error } = await supabase
         .from("household_members")
-        .select("household_id")
+        .select("household_id, is_owner")
         .eq("user_id", user.id)
         .eq("status", "active");
     if (error) throw new Error("Kunde inte hämta hushållen");
     if (!members.length) return [];
 
-    const { data, error: householdsError } = await supabase
-        .from("households")
-        .select("*")
-        .in("id", members.map((m) => m.household_id));
-    if (householdsError) throw new Error("Kunde inte hämta hushållen");
-    return data;
+    const ids = members.map((m) => m.household_id);
+    const [households, all] = await Promise.all([
+        supabase.from("households").select("*").in("id", ids),
+        supabase.from("household_members").select("household_id").in("household_id", ids).eq("status", "active"),
+    ]);
+    if (households.error || all.error) throw new Error("Kunde inte hämta hushållen");
+
+    return households.data.map((h) => ({
+        ...h,
+        memberCount: all.data.filter((m) => m.household_id === h.id).length,
+        isOwner: members.some((m) => m.household_id === h.id && m.is_owner),
+    }));
+}
+
+export async function fetchProfileNames(userIds: string[]): Promise<Record<string, string>> {
+    if (!userIds.length) return {};
+    const { data, error } = await supabase.from("profiles").select("id, name").in("id", userIds);
+    if (error) return {};
+    return Object.fromEntries(data.map((p) => [p.id, p.name]));
 }
