@@ -69,3 +69,34 @@ export async function createHousehold(name: string, avatar: Avatar, color: strin
     if (error) throw new Error("Kunde inte skapa hushållet");
     return data;
 }
+
+export async function fetchTakenAvatars(code: string): Promise<Avatar[]> {
+    const { data, error } = await supabase.rpc("taken_avatars", { p_code: code });
+    if (error) return [];
+    return data ?? [];
+}
+
+export async function requestJoin(code: string, avatar: Avatar, color: string): Promise<HouseholdMember> {
+    const trimmed = code.trim();
+    if (trimmed.length === 0) {
+        throw new Error("Fyll i en kod");
+    }
+
+    const { data, error } = await supabase.rpc("request_join", {
+        p_code: trimmed,
+        p_avatar: avatar,
+        p_color: color,
+    });
+
+    if (error) {
+        if (error.message.includes("invalid code")) throw new Error("Hittade inget hushåll med den koden");
+        if (error.code === "23505") throw new Error("Avataren är upptagen eller du har redan skickat en förfrågan");
+        throw new Error("Kunde inte gå med i hushållet");
+    }
+    return data;
+}
+
+export async function cancelJoin(memberId: string): Promise<void> {
+    const { error } = await supabase.from("household_members").delete().eq("id", memberId);
+    if (error) throw new Error("Kunde inte avbryta förfrågan");
+}
