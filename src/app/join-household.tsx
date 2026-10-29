@@ -4,7 +4,7 @@ import { TextField } from "@/components/TextField";
 import { cancelJoin, fetchTakenAvatars, requestJoin } from "@/features/household/api";
 import { AVATAR_COLORS, colors, typography } from "@/theme/colors";
 import type { Avatar, HouseholdMember } from "@/types/database";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function JoinHouseholdScreen() {
@@ -16,13 +16,14 @@ export default function JoinHouseholdScreen() {
     const [loading, setLoading] = useState(false);
     const [request, setRequest] = useState<HouseholdMember | null>(null);
 
-    useEffect(() => {
-        if (code.trim().length === 6) {
-            fetchTakenAvatars(code).then(setTaken);
+    const onChangeCode = (text: string) => {
+        setCode(text);
+        if (text.trim().length === 6) {
+            fetchTakenAvatars(text).then(setTaken);
         } else {
             setTaken([]);
         }
-    }, [code]);
+    };
 
     const join = async () => {
         if (!avatar) {
@@ -65,7 +66,7 @@ export default function JoinHouseholdScreen() {
             <TextField
                 label="Hushållets kod"
                 value={code}
-                onChangeText={setCode}
+                onChangeText={onChangeCode}
                 placeholder="K7M2QX"
                 autoCapitalize="characters"
                 maxLength={6}
