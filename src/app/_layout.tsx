@@ -22,6 +22,8 @@ function RootNavigator() {
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="household" />
+        <Stack.Screen name="create-household" options={{ title: "Skapa hushåll" }} />
+        <Stack.Screen name="join-household" options={{ title: "Gå med i hushåll" }} />
         <Stack.Screen name="statistics" />
         <Stack.Screen name="chore/[id]" />
       </Stack.Protected>

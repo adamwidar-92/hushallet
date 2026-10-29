@@ -61,7 +61,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 ### Hushåll (7)
 
-- [ ] * Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet; namnet ska gå att ändra. ([#19](https://github.com/adamwidar-92/hushallet/issues/19))
+- [x] * Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet; namnet ska gå att ändra. ([#19](https://github.com/adamwidar-92/hushallet/issues/19))
 - [ ] Alla användare i ett hushåll ska kunna se vilka som tillhör hushållet.
 - [ ] En ägare ska kunna se förfrågningar om att gå med i hushållet.
 - [ ] En ägare ska kunna acceptera eller neka förfrågningar.
@@ -72,8 +72,8 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 ### Konto (5)
 
 - [ ] * En användare ska kunna registrera och logga in sig. ([#13](https://github.com/adamwidar-92/hushallet/issues/13))
-- [ ] * En användare ska kunna skapa ett nytt hushåll. ([#16](https://github.com/adamwidar-92/hushallet/issues/16))
-- [ ] * En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. ([#17](https://github.com/adamwidar-92/hushallet/issues/17))
+- [x] * En användare ska kunna skapa ett nytt hushåll. ([#16](https://github.com/adamwidar-92/hushallet/issues/16))
+- [x] * En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. ([#17](https://github.com/adamwidar-92/hushallet/issues/17))
 - [ ] När en användare valt att gå med i ett hushåll behöver en ägare först godkänna användaren.
 - [ ] En användare ska kunna lämna ett hushåll.
 
