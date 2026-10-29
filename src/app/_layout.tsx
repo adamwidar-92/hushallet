@@ -17,6 +17,8 @@ function RootNavigator() {
     <Stack
       screenOptions={{
         headerTintColor: colors.text,
+        headerTitleAlign: "center",
+        headerTitleStyle: { fontWeight: "700" },
         headerStyle: { backgroundColor: colors.surface },
         contentStyle: { backgroundColor: colors.background },
       }}
