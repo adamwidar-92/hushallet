@@ -123,3 +123,10 @@ export async function fetchMyHouseholds(): Promise<MyHousehold[]> {
         isOwner: members.some((m) => m.household_id === h.id && m.is_owner),
     }));
 }
+
+export async function fetchProfileNames(userIds: string[]): Promise<Record<string, string>> {
+    if (!userIds.length) return {};
+    const { data, error } = await supabase.from("profiles").select("id, name").in("id", userIds);
+    if (error) return {};
+    return Object.fromEntries(data.map((p) => [p.id, p.name]));
+}
