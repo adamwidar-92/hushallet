@@ -1,4 +1,5 @@
 import { PillButton } from "@/components/PillButton";
+import { useSelectedHousehold } from "@/context/HouseholdContext";
 import { fetchMyHouseholds } from "@/features/household/api";
 import { colors, shadow, typography } from "@/theme/colors";
 import type { Household } from "@/types/database";
@@ -8,6 +9,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function HouseholdsScreen() {
   const router = useRouter();
+  const { setHouseholdId } = useSelectedHousehold();
   const [households, setHouseholds] = useState<Household[]>([]);
 
   useFocusEffect(
@@ -27,7 +29,13 @@ export default function HouseholdsScreen() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={<Text style={styles.empty}>Du är inte med i något hushåll än</Text>}
         renderItem={({ item }) => (
-          <Pressable style={styles.card} onPress={() => router.push("/")}>
+          <Pressable
+            style={styles.card}
+            onPress={() => {
+              setHouseholdId(item.id);
+              router.push("/");
+            }}
+          >
             <Text style={styles.name}>{item.name}</Text>
           </Pressable>
         )}

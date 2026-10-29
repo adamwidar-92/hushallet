@@ -10,13 +10,19 @@ type Props = {
   onPrev?: () => void;
   onNext?: () => void;
   onTitlePress?: () => void;
+  onBack?: () => void;
 };
 
-export function NavigationBar({ title, subtitle, onPrev, onNext, onTitlePress }: Props) {
+export function NavigationBar({ title, subtitle, onPrev, onNext, onTitlePress, onBack }: Props) {
   const { top } = useSafeAreaInsets();
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
+      {onBack && (
+        <Pressable onPress={onBack} hitSlop={12} style={[styles.back, { top: top + 4 }]}>
+          <Feather name="home" size={22} color={colors.text} />
+        </Pressable>
+      )}
       <Pressable onPress={onTitlePress} disabled={!onTitlePress}>
         <Text style={styles.title}>{title}</Text>
       </Pressable>
@@ -56,6 +62,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   title: { ...typography.title, color: colors.text },
+  back: { position: "absolute", left: 12 },
   row: {
     height: 28,
     alignSelf: "stretch",

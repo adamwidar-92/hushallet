@@ -26,6 +26,7 @@ export default function TodayScreen() {
         subtitle="idag"
         onNext={hasWeekStats ? () => router.push("/statistics") : undefined}
         onTitlePress={() => router.push("/household")}
+        onBack={() => router.dismissTo("/households")}
       />
       <FlatList
         data={chores}

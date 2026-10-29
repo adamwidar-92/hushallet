@@ -1,9 +1,11 @@
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { PillButton } from "@/components/PillButton";
 import { TextField } from "@/components/TextField";
-import { cancelJoin, fetchTakenAvatars, requestJoin } from "@/features/household/api";
+import { useSelectedHousehold } from "@/context/HouseholdContext";
+import { fetchTakenAvatars, requestJoin } from "@/features/household/api";
 import { AVATAR_COLORS, colors, typography } from "@/theme/colors";
 import type { Avatar, HouseholdMember } from "@/types/database";
+import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -15,6 +17,7 @@ export default function JoinHouseholdScreen() {
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState(false);
     const [request, setRequest] = useState<HouseholdMember | null>(null);
+    const { setHouseholdId } = useSelectedHousehold();
 
     const onChangeCode = (text: string) => {
         setCode(text);
@@ -41,10 +44,10 @@ export default function JoinHouseholdScreen() {
         }
     };
 
-    const cancel = async () => {
+    const goToHousehold = () => {
         if (!request) return;
-        await cancelJoin(request.id);
-        setRequest(null);
+        setHouseholdId(request.household_id);
+        router.replace("/");
     };
 
     if (request) {
@@ -53,10 +56,8 @@ export default function JoinHouseholdScreen() {
                 <View style={[styles.avatarCircle, { backgroundColor: request.avatar_color }]}>
                     <Text style={styles.avatar}>{request.avatar}</Text>
                 </View>
-                <Text style={styles.title}>Förfrågan skickad!</Text>
-                <Text style={styles.hint}>En ägare behöver godkänna dig innan du kan se hushållet.</Text>
-                <Text style={styles.hint}>Väntar på godkännande</Text>
-                <PillButton title="Avbryt förfrågan" icon="x" onPress={cancel} />
+                <Text style={styles.title}>Du är med i hushållet!</Text>
+                <PillButton title="Gå till hushållet" icon="home" variant="primary" onPress={goToHousehold} />
             </View>
         );
     }

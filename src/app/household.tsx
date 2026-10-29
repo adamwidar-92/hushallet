@@ -5,7 +5,7 @@ import { useHousehold } from "@/features/household/useHousehold";
 import { colors, shadow, typography } from "@/theme/colors";
 import Feather from "@expo/vector-icons/Feather";
 import * as Clipboard from "expo-clipboard";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -63,6 +63,11 @@ export default function HouseholdScreen() {
         <Text style={styles.code}>{household.join_code}</Text>
       </View>
       <PillButton title="Kopiera kod" icon="copy" onPress={copyCode} />
+      <PillButton
+        title="Mina hushåll"
+        icon="home"
+        onPress={() => router.dismissTo("/households")}
+      />
       <Pressable onPress={signOut} style={styles.logout}>
         <Feather name="log-out" size={20} color={colors.danger} />
         <Text style={styles.logoutText}>Logga ut</Text>
