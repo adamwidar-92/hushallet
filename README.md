@@ -56,7 +56,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 - [x] * En logga, splashscreen och appikon ska designas och användas. ([#12](https://github.com/adamwidar-92/hushallet/issues/12))
 - [x] * Applikationen ska byggas med RN, Expo & TS. ([#9](https://github.com/adamwidar-92/hushallet/issues/9))
 - [ ] * Designen av appen ska utgå ifrån befintliga skisser (undantag diskuteras med produktägare, godkänns och dokumenteras). ([#11](https://github.com/adamwidar-92/hushallet/issues/11))
-- [ ] Information ska kommuniceras till och från en server. *(Obligatoriskt enligt Krav för godkänt, punkt 2.)* ([#10](https://github.com/adamwidar-92/hushallet/issues/10))
+- [x] Information ska kommuniceras till och från en server. *(Obligatoriskt enligt Krav för godkänt, punkt 2.)* ([#10](https://github.com/adamwidar-92/hushallet/issues/10))
 
 ### Hushåll (7)
 
