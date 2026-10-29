@@ -30,7 +30,6 @@ src/
   lib/          # supabase-klient
   theme/        # färger och typografi från Figma
   types/        # TypeScript-typer som matchar databasen
-  mock/         # mockdata (Familjen Andersson) för att bygga vyer utan backend
 supabase/migrations/  # databasschema (Postgres + RLS)
 docs/DESIGN.md        # beskrivning av alla skärmar och komponenter
 docs/design/          # skärmdumpar från Figma
@@ -42,7 +41,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 1. **Välj en issue** på [GitHub Issues](https://github.com/adamwidar-92/hushallet/issues) som inte är tilldelad och vars beroenden är klara. Tilldela dig själv.
 2. **Skapa en branch** från senaste `master`: `git checkout -b feature/<issuenummer>-kort-namn` (t.ex. `feature/13-login`).
-3. **Koda** enligt `docs/DESIGN.md`. Använd typerna i `src/types` och mockdatan i `src/mock` tills backend-koden finns. Kör `npx tsc --noEmit` och `npm run lint` innan du pushar.
+3. **Koda** enligt `docs/DESIGN.md`. Använd typerna i `src/types`. Kör `npx tsc --noEmit` och `npm run lint` innan du pushar.
 4. **Öppna en Pull Request** mot `master` och fyll i PR-mallen. Skriv `Closes #<nr>` så stängs issuen automatiskt.
 5. **Review:** minst en annan i gruppen granskar och godkänner.
 6. **CI måste vara grön** innan merge. Merga med *Squash and merge* och radera branchen.
