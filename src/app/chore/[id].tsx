@@ -1,15 +1,18 @@
+import Feather from "@expo/vector-icons/Feather";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import type { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { Badge } from "@/components/Badge";
 import { PillButton } from "@/components/PillButton";
 import { useChores, useCompleteChore } from "@/features/chores/useChores";
+import { useMembership } from "@/features/household/useMembership";
 import { colors, shadow, typography } from "@/theme/colors";
 
 export default function ChoreDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { chores } = useChores();
+  const isOwner = useMembership().data?.is_owner;
   const complete = useCompleteChore();
   const chore = chores.find((c) => c.id === id);
 
@@ -18,9 +21,26 @@ export default function ChoreDetailScreen() {
   const markDone = () =>
     complete.mutate(chore.id, { onSuccess: () => router.back() });
 
+  const editButton = () => (
+    <Pressable
+      onPress={() =>
+        router.push({ pathname: "/chore-form", params: { id: chore.id } })
+      }
+      hitSlop={12}
+      accessibilityLabel="Ändra syssla"
+    >
+      <Feather name="edit-2" size={22} color={colors.text} />
+    </Pressable>
+  );
+
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: chore.name }} />
+      <Stack.Screen
+        options={{
+          title: chore.name,
+          headerRight: isOwner ? editButton : undefined,
+        }}
+      />
       <View style={styles.card}>
         <Text style={styles.description}>{chore.description}</Text>
       </View>
@@ -32,15 +52,17 @@ export default function ChoreDetailScreen() {
       <InfoRow label="Värde:">
         <Badge value={chore.weight} />
       </InfoRow>
-      <PillButton
-        title="Markera som gjord"
-        icon="check-circle"
-        onPress={markDone}
-        disabled={complete.isPending}
-      />
-      {complete.error && (
-        <Text style={styles.error}>{complete.error.message}</Text>
-      )}
+      <View style={styles.footer}>
+        {complete.error && (
+          <Text style={styles.error}>{complete.error.message}</Text>
+        )}
+        <PillButton
+          title="Markera som gjord"
+          icon="check-circle"
+          onPress={markDone}
+          disabled={complete.isPending}
+        />
+      </View>
     </View>
   );
 }
@@ -73,6 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 6,
   },
+  footer: { marginTop: "auto", gap: 12 },
   label: { ...typography.taskTitle, color: colors.text },
   description: { fontSize: 16, color: colors.text },
   error: { ...typography.small, color: colors.danger, textAlign: "center" },
