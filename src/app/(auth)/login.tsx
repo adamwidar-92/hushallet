@@ -33,7 +33,9 @@ export default function LoginScreen() {
     setLoading(false);
     if (signInError) {
       setError(signInError);
+      return;
     }
+    router.replace("/households");
   };
 
   return (

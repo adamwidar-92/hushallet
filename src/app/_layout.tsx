@@ -20,6 +20,7 @@ function RootNavigator() {
       }}
     >
       <Stack.Protected guard={!!session}>
+        <Stack.Screen name="households" />
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="household" />
         <Stack.Screen name="create-household" options={{ title: "Skapa hushåll" }} />

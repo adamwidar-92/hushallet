@@ -100,3 +100,22 @@ export async function cancelJoin(memberId: string): Promise<void> {
     const { error } = await supabase.from("household_members").delete().eq("id", memberId);
     if (error) throw new Error("Kunde inte avbryta förfrågan");
 }
+export async function fetchMyHouseholds(): Promise<Household[]> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const { data: members, error } = await supabase
+        .from("household_members")
+        .select("household_id")
+        .eq("user_id", user.id)
+        .eq("status", "active");
+    if (error) throw new Error("Kunde inte hämta hushållen");
+    if (!members.length) return [];
+
+    const { data, error: householdsError } = await supabase
+        .from("households")
+        .select("*")
+        .in("id", members.map((m) => m.household_id));
+    if (householdsError) throw new Error("Kunde inte hämta hushållen");
+    return data;
+}
