@@ -73,7 +73,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 - [ ] * En användare ska kunna registrera och logga in sig. ([#13](https://github.com/adamwidar-92/hushallet/issues/13))
 - [x] * En användare ska kunna skapa ett nytt hushåll. ([#16](https://github.com/adamwidar-92/hushallet/issues/16))
-- [ ] * En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. ([#17](https://github.com/adamwidar-92/hushallet/issues/17))
+- [x] * En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. ([#17](https://github.com/adamwidar-92/hushallet/issues/17))
 - [ ] När en användare valt att gå med i ett hushåll behöver en ägare först godkänna användaren.
 - [ ] En användare ska kunna lämna ett hushåll.
 
