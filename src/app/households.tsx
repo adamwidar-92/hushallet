@@ -1,8 +1,8 @@
 import { PillButton } from "@/components/PillButton";
 import { useSelectedHousehold } from "@/context/HouseholdContext";
-import { fetchMyHouseholds } from "@/features/household/api";
-import { colors, shadow, typography } from "@/theme/colors";
-import type { Household } from "@/types/database";
+import { fetchMyHouseholds, type MyHousehold } from "@/features/household/api";
+import { AVATAR_COLORS, colors, shadow, typography } from "@/theme/colors";
+import Feather from "@expo/vector-icons/Feather";
 import { Stack, useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
@@ -10,7 +10,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 export default function HouseholdsScreen() {
   const router = useRouter();
   const { setHouseholdId } = useSelectedHousehold();
-  const [households, setHouseholds] = useState<Household[]>([]);
+  const [households, setHouseholds] = useState<MyHousehold[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -20,7 +20,16 @@ export default function HouseholdsScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Mina hushåll" }} />
+      <Stack.Screen
+        options={{
+          title: "Mina hushåll",
+          headerRight: () => (
+            <Pressable onPress={() => router.push("/profile")} hitSlop={12}>
+              <Feather name="user" size={22} color={colors.text} />
+            </Pressable>
+          ),
+        }}
+      />
       <Text style={styles.heading}>Välj ett hushåll</Text>
 
       <FlatList
@@ -28,33 +37,62 @@ export default function HouseholdsScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         ListEmptyComponent={<Text style={styles.empty}>Du är inte med i något hushåll än</Text>}
-        renderItem={({ item }) => (
-          <Pressable
-            style={styles.card}
-            onPress={() => {
-              setHouseholdId(item.id);
-              router.push("/");
-            }}
-          >
-            <Text style={styles.name}>{item.name}</Text>
-          </Pressable>
-        )}
+        renderItem={({ item, index }) => {
+          const color = AVATAR_COLORS[index % AVATAR_COLORS.length];
+          return (
+            <Pressable
+              style={styles.card}
+              onPress={() => {
+                setHouseholdId(item.id);
+                router.push("/");
+              }}
+            >
+              <View style={[styles.icon, { backgroundColor: color + "33" }]}>
+                <Feather name="home" size={20} color={color} />
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.meta}>
+                  {item.memberCount} {item.memberCount === 1 ? "medlem" : "medlemmar"}
+                  {item.isOwner ? " · Ägare" : ""}
+                </Text>
+              </View>
+              <Feather name="chevron-right" size={22} color={colors.textMuted} />
+            </Pressable>
+          );
+        }}
       />
 
       <View style={styles.buttons}>
-        <PillButton title="Skapa" icon="plus-circle" onPress={() => router.push("/create-household")} />
-        <PillButton title="Gå med" icon="log-in" onPress={() => router.push("/join-household")} />
+        <View style={styles.button}>
+          <PillButton title="Skapa" icon="plus" variant="primary" onPress={() => router.push("/create-household")} />
+        </View>
+        <View style={styles.button}>
+          <PillButton title="Gå med" icon="home" onPress={() => router.push("/join-household")} />
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 12, backgroundColor: colors.background },
-  heading: { ...typography.subtitle, color: colors.text, marginBottom: 12 },
+  container: { flex: 1, padding: 16, backgroundColor: colors.background },
+  heading: { ...typography.small, color: colors.textMuted, marginBottom: 12 },
   list: { gap: 12 },
-  card: { padding: 18, borderRadius: 10, backgroundColor: colors.surface, ...shadow },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    padding: 16,
+    borderRadius: 10,
+    backgroundColor: colors.surface,
+    ...shadow,
+  },
+  icon: { width: 40, height: 40, borderRadius: 8, alignItems: "center", justifyContent: "center" },
+  info: { flex: 1, gap: 2 },
   empty: { ...typography.small, color: colors.textMuted },
-  name: { ...typography.taskTitle, color: colors.text },
-  buttons: { flexDirection: "row", gap: 12, justifyContent: "center", paddingVertical: 12 },
+  name: { fontSize: 18, fontWeight: "500", color: colors.text },
+  meta: { ...typography.caption, color: colors.textMuted },
+  buttons: { flexDirection: "row", gap: 12, paddingVertical: 12 },
+  button: { flex: 1 },
 });
