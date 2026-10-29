@@ -1,3 +1,4 @@
+import type { ChoreInput } from "@/components/ChoreForm";
 import { supabase } from "@/lib/supabase";
 import type { Chore, ChoreCompletion, HouseholdMember } from "@/types/database";
 
@@ -53,4 +54,10 @@ export async function completeChore(choreId: string, memberId: string) {
       .from("chore_completions")
       .insert({ chore_id: choreId, member_id: memberId }),
   );
+}
+
+export type ChoreSave = ChoreInput & { id?: string; household_id: string };
+
+export async function saveChore(chore: ChoreSave) {
+  unwrap(await supabase.from("chores").upsert(chore));
 }
