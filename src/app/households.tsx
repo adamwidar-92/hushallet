@@ -38,7 +38,7 @@ export default function HouseholdsScreen() {
         contentContainerStyle={styles.list}
         ListEmptyComponent={<Text style={styles.empty}>Du är inte med i något hushåll än</Text>}
         renderItem={({ item, index }) => {
-          const color = AVATAR_COLORS[index % AVATAR_COLORS.length];
+          const color = AVATAR_COLORS[(index * 6) % AVATAR_COLORS.length];
           return (
             <Pressable
               style={styles.card}
