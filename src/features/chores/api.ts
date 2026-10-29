@@ -1,9 +1,4 @@
-import {
-  mockChores,
-  mockCompletions,
-  mockCurrentUserId,
-  mockMembers,
-} from "@/mock/mockData";
+import { supabase } from "@/lib/supabase";
 import type { Chore, ChoreCompletion, HouseholdMember } from "@/types/database";
 
 export type ChoresData = {
@@ -12,25 +7,50 @@ export type ChoresData = {
   members: HouseholdMember[];
 };
 
-// Mockdata tills login/hushåll (#13, #16) finns. Byt bara innehållet i funktionerna mot Supabase.
-export async function fetchChoresData(): Promise<ChoresData> {
-  return {
-    chores: mockChores.filter((c) => !c.archived),
-    completions: [...mockCompletions],
-    members: mockMembers,
-  };
+function unwrap<T>({
+  data,
+  error,
+}: {
+  data: T | null;
+  error: Error | null;
+}): T {
+  if (error) throw error;
+  return data as T;
 }
 
-/** Supabase: supabase.from('chore_completions').insert({ chore_id, member_id: member.id }) */
-export async function completeChore(choreId: string): Promise<void> {
-  // member_id är användarens rad i household_members, inte user-id.
-  const member = mockMembers.find((m) => m.user_id === mockCurrentUserId);
-  if (!member) return;
+export async function fetchChoresData(
+  householdId: string,
+): Promise<ChoresData> {
+  const [chores, members] = await Promise.all([
+    supabase
+      .from("chores")
+      .select("*")
+      .eq("household_id", householdId)
+      .eq("archived", false)
+      .then(unwrap),
+    supabase
+      .from("household_members")
+      .select("*")
+      .eq("household_id", householdId)
+      .then(unwrap),
+  ]);
 
-  mockCompletions.unshift({
-    id: `completion-${Date.now()}`,
-    chore_id: choreId,
-    member_id: member.id,
-    completed_at: new Date().toISOString(),
-  });
+  const completions = await supabase
+    .from("chore_completions")
+    .select("*")
+    .in(
+      "chore_id",
+      chores.map((c) => c.id),
+    )
+    .then(unwrap);
+
+  return { chores, completions, members };
+}
+
+export async function completeChore(choreId: string, memberId: string) {
+  unwrap(
+    await supabase
+      .from("chore_completions")
+      .insert({ chore_id: choreId, member_id: memberId }),
+  );
 }

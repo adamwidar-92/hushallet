@@ -1,26 +1,37 @@
-import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { fetchChoresData, type ChoresData } from "@/features/chores/api";
+import {
+  completeChore,
+  fetchChoresData,
+  type ChoresData,
+} from "@/features/chores/api";
+import { useMembership } from "@/features/household/useMembership";
 
 const empty: ChoresData = { chores: [], completions: [], members: [] };
 
 export function useChores() {
-  const [data, setData] = useState<ChoresData>(empty);
-  const [refreshing, setRefreshing] = useState(false);
+  const householdId = useMembership().data?.household_id;
 
-  const refresh = useCallback(async () => {
-    setRefreshing(true);
-    setData(await fetchChoresData());
-    setRefreshing(false);
-  }, []);
+  const {
+    data = empty,
+    error,
+    isRefetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["chores", householdId],
+    queryFn: () => fetchChoresData(householdId!),
+    enabled: !!householdId,
+  });
 
-  // Hämtar om varje gång man kommer tillbaka till vyn.
-  useFocusEffect(
-    useCallback(() => {
-      refresh();
-    }, [refresh]),
-  );
+  return { ...data, error, refreshing: isRefetching, refresh: refetch };
+}
 
-  return { ...data, refreshing, refresh };
+export function useCompleteChore() {
+  const memberId = useMembership().data?.id;
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (choreId: string) => completeChore(choreId, memberId!),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chores"] }),
+  });
 }

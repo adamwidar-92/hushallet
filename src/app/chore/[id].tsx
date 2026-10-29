@@ -4,21 +4,19 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { Badge } from "@/components/Badge";
 import { PillButton } from "@/components/PillButton";
-import { completeChore } from "@/features/chores/api";
-import { useChores } from "@/features/chores/useChores";
+import { useChores, useCompleteChore } from "@/features/chores/useChores";
 import { colors, shadow, typography } from "@/theme/colors";
 
 export default function ChoreDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { chores } = useChores();
+  const complete = useCompleteChore();
   const chore = chores.find((c) => c.id === id);
 
   if (!chore) return null;
 
-  const markDone = async () => {
-    await completeChore(chore.id);
-    router.back();
-  };
+  const markDone = () =>
+    complete.mutate(chore.id, { onSuccess: () => router.back() });
 
   return (
     <View style={styles.container}>
@@ -38,7 +36,11 @@ export default function ChoreDetailScreen() {
         title="Markera som gjord"
         icon="check-circle"
         onPress={markDone}
+        disabled={complete.isPending}
       />
+      {complete.error && (
+        <Text style={styles.error}>{complete.error.message}</Text>
+      )}
     </View>
   );
 }
@@ -73,4 +75,5 @@ const styles = StyleSheet.create({
   },
   label: { ...typography.taskTitle, color: colors.text },
   description: { fontSize: 16, color: colors.text },
+  error: { ...typography.small, color: colors.danger, textAlign: "center" },
 });
