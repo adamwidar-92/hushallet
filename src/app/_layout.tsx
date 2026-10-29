@@ -36,6 +36,7 @@ function RootNavigator() {
           options={{ title: "Gå med i hushåll" }}
         />
         <Stack.Screen name="statistics" />
+        <Stack.Screen name="profile" options={{ title: "Profil" }} />
         <Stack.Screen name="chore/[id]" />
         <Stack.Screen
           name="chore-form"
