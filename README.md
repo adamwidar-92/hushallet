@@ -61,7 +61,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 ### Hushåll (7)
 
-- [ ] * Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet; namnet ska gå att ändra. ([#19](https://github.com/adamwidar-92/hushallet/issues/19))
+- [x] * Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet; namnet ska gå att ändra. ([#19](https://github.com/adamwidar-92/hushallet/issues/19))
 - [ ] Alla användare i ett hushåll ska kunna se vilka som tillhör hushållet.
 - [ ] En ägare ska kunna se förfrågningar om att gå med i hushållet.
 - [ ] En ägare ska kunna acceptera eller neka förfrågningar.
