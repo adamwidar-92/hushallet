@@ -1,9 +1,11 @@
 import { NavigationBar } from "@/components/NavigationBar";
+import { PillButton } from "@/components/PillButton";
 import { TaskCard } from "@/components/TaskCard";
 import { TaskStatus } from "@/components/TaskStatus";
 import { getChoreStatus } from "@/features/chores/status";
 import { useChores } from "@/features/chores/useChores";
 import { useHousehold } from "@/features/household/useHousehold";
+import { useMembership } from "@/features/household/useMembership";
 import { filterByPeriod, getPeriod } from "@/features/statistics/period";
 import { colors, typography } from "@/theme/colors";
 import { router } from "expo-router";
@@ -13,6 +15,7 @@ export default function TodayScreen() {
   const { chores, completions, members, error, refreshing, refresh } =
     useChores();
   const { household } = useHousehold();
+  const isOwner = useMembership().data?.is_owner;
   const hasWeekStats =
     filterByPeriod(completions, getPeriod("currentWeek")).length > 0;
 
@@ -47,6 +50,15 @@ export default function TodayScreen() {
           </Text>
         }
       />
+      {isOwner && (
+        <View style={styles.footer}>
+          <PillButton
+            title="Lägg till"
+            icon="plus-circle"
+            onPress={() => router.push("/chore-form")}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -61,4 +73,5 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   error: { color: colors.danger },
+  footer: { padding: 12 },
 });
