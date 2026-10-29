@@ -13,6 +13,8 @@ function authErrorMessage(error: AuthError): string {
       return 'Lösenordet är för kort (minst 6 tecken).';
     case 'email_not_confirmed':
       return 'Bekräfta din e-post innan du loggar in.';
+    case 'over_email_send_rate_limit':
+      return 'För många försök just nu. Vänta en stund och försök igen.';
     default:
       return 'Något gick fel. Försök igen.';
   }
