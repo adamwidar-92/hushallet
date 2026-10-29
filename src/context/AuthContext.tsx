@@ -10,7 +10,7 @@ function authErrorMessage(error: AuthError): string {
     case 'email_exists':
       return 'E-postadressen används redan.';
     case 'weak_password':
-      return 'Lösenordet är för kort (minst 6 tecken).';
+      return 'Lösenordet är för kort (minst 8 tecken).';
     case 'email_not_confirmed':
       return 'Bekräfta din e-post innan du loggar in.';
     case 'over_email_send_rate_limit':

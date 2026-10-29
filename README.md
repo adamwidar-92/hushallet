@@ -30,7 +30,6 @@ src/
   lib/          # supabase-klient
   theme/        # färger och typografi från Figma
   types/        # TypeScript-typer som matchar databasen
-  mock/         # mockdata (Familjen Andersson) för att bygga vyer utan backend
 supabase/migrations/  # databasschema (Postgres + RLS)
 docs/DESIGN.md        # beskrivning av alla skärmar och komponenter
 docs/design/          # skärmdumpar från Figma
@@ -42,7 +41,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 1. **Välj en issue** på [GitHub Issues](https://github.com/adamwidar-92/hushallet/issues) som inte är tilldelad och vars beroenden är klara. Tilldela dig själv.
 2. **Skapa en branch** från senaste `master`: `git checkout -b feature/<issuenummer>-kort-namn` (t.ex. `feature/13-login`).
-3. **Koda** enligt `docs/DESIGN.md`. Använd typerna i `src/types` och mockdatan i `src/mock` tills backend-koden finns. Kör `npx tsc --noEmit` och `npm run lint` innan du pushar.
+3. **Koda** enligt `docs/DESIGN.md`. Använd typerna i `src/types`. Kör `npx tsc --noEmit` och `npm run lint` innan du pushar.
 4. **Öppna en Pull Request** mot `master` och fyll i PR-mallen. Skriv `Closes #<nr>` så stängs issuen automatiskt.
 5. **Review:** minst en annan i gruppen granskar och godkänner.
 6. **CI måste vara grön** innan merge. Merga med *Squash and merge* och radera branchen.
@@ -54,15 +53,15 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 ### Kravlista (4)
 
-- [ ] * En logga, splashscreen och appikon ska designas och användas. ([#12](https://github.com/adamwidar-92/hushallet/issues/12))
-- [ ] * Applikationen ska byggas med RN, Expo & TS. ([#9](https://github.com/adamwidar-92/hushallet/issues/9))
+- [x] * En logga, splashscreen och appikon ska designas och användas. ([#12](https://github.com/adamwidar-92/hushallet/issues/12))
+- [x] * Applikationen ska byggas med RN, Expo & TS. ([#9](https://github.com/adamwidar-92/hushallet/issues/9))
 - [ ] * Designen av appen ska utgå ifrån befintliga skisser (undantag diskuteras med produktägare, godkänns och dokumenteras). ([#11](https://github.com/adamwidar-92/hushallet/issues/11))
-- [ ] Information ska kommuniceras till och från en server. *(Obligatoriskt enligt Krav för godkänt, punkt 2.)* ([#10](https://github.com/adamwidar-92/hushallet/issues/10))
+- [x] Information ska kommuniceras till och från en server. *(Obligatoriskt enligt Krav för godkänt, punkt 2.)* ([#10](https://github.com/adamwidar-92/hushallet/issues/10))
 
 ### Hushåll (7)
 
 - [x] * Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet; namnet ska gå att ändra. ([#19](https://github.com/adamwidar-92/hushallet/issues/19))
-- [ ] Alla användare i ett hushåll ska kunna se vilka som tillhör hushållet.
+- [x] Alla användare i ett hushåll ska kunna se vilka som tillhör hushållet.
 - [ ] En ägare ska kunna se förfrågningar om att gå med i hushållet.
 - [ ] En ägare ska kunna acceptera eller neka förfrågningar.
 - [ ] En ägare ska kunna göra andra till ägare.
@@ -71,7 +70,7 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 ### Konto (5)
 
-- [ ] * En användare ska kunna registrera och logga in sig. ([#13](https://github.com/adamwidar-92/hushallet/issues/13))
+- [x] * En användare ska kunna registrera och logga in sig. ([#13](https://github.com/adamwidar-92/hushallet/issues/13))
 - [x] * En användare ska kunna skapa ett nytt hushåll. ([#16](https://github.com/adamwidar-92/hushallet/issues/16))
 - [x] * En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. ([#17](https://github.com/adamwidar-92/hushallet/issues/17))
 - [ ] När en användare valt att gå med i ett hushåll behöver en ägare först godkänna användaren.
@@ -79,33 +78,33 @@ Design: se [docs/DESIGN.md](docs/DESIGN.md) och [Figma](https://www.figma.com/de
 
 ### Profil (6)
 
-- [ ] * En användare ska kunna ange sitt namn. ([#14](https://github.com/adamwidar-92/hushallet/issues/14))
-- [ ] * En användare ska kunna välja en avatar (emoji-djur + färg) från en fördefinierad lista. ([#15](https://github.com/adamwidar-92/hushallet/issues/15))
-- [ ] * Valda avatarer ska inte kunna väljas av andra användare i hushållet. ([#18](https://github.com/adamwidar-92/hushallet/issues/18))
-- [ ] * Avataren ska användas i appen för att visa vad användaren har gjort. ([#26](https://github.com/adamwidar-92/hushallet/issues/26))
+- [x] * En användare ska kunna ange sitt namn. ([#14](https://github.com/adamwidar-92/hushallet/issues/14))
+- [x] * En användare ska kunna välja en avatar (emoji-djur + färg) från en fördefinierad lista. ([#15](https://github.com/adamwidar-92/hushallet/issues/15))
+- [x] * Valda avatarer ska inte kunna väljas av andra användare i hushållet. ([#18](https://github.com/adamwidar-92/hushallet/issues/18))
+- [x] * Avataren ska användas i appen för att visa vad användaren har gjort. ([#26](https://github.com/adamwidar-92/hushallet/issues/26))
 - [ ] En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
-- [ ] Om en användare tillhör två eller fler hushåll ska denne kunna byta mellan dem.
+- [x] Om en användare tillhör två eller fler hushåll ska denne kunna byta mellan dem.
 
 ### Sysslor (6)
 
-- [ ] * En ägare ska kunna lägga till sysslor att göra i hemmet. ([#21](https://github.com/adamwidar-92/hushallet/issues/21))
-- [ ] * En syssla ska ha ett namn, en beskrivning, hur ofta den ska göras (dagar) och en vikt (energikrävande). ([#20](https://github.com/adamwidar-92/hushallet/issues/20))
+- [x] * En ägare ska kunna lägga till sysslor att göra i hemmet. ([#21](https://github.com/adamwidar-92/hushallet/issues/21))
+- [x] * En syssla ska ha ett namn, en beskrivning, hur ofta den ska göras (dagar) och en vikt (energikrävande). ([#20](https://github.com/adamwidar-92/hushallet/issues/20))
 - [ ] En användare ska kunna lägga till en ljudinspelning och en bild för att beskriva sysslan.
-- [ ] * En ägare ska kunna redigera en syssla. ([#22](https://github.com/adamwidar-92/hushallet/issues/22))
+- [x] * En ägare ska kunna redigera en syssla. ([#22](https://github.com/adamwidar-92/hushallet/issues/22))
 - [ ] En ägare ska kunna ta bort en syssla.
 - [ ] Vid borttagning ska användaren varnas om att statistiken tas bort och få välja att arkivera istället.
 
 ### Dagsvyn (3)
 
-- [ ] * Alla sysslor ska listas i en dagsvy och ge en översikt kring vad som behöver göras. ([#23](https://github.com/adamwidar-92/hushallet/issues/23))
-- [ ] * Utöver namnet visas vem/vilka som gjort sysslan, hur många dagar sedan den gjordes senast samt om den är försenad. ([#24](https://github.com/adamwidar-92/hushallet/issues/24))
-- [ ] * När en användare väljer en syssla visas beskrivningen och den kan med ett enkelt tryck markeras som gjord. ([#25](https://github.com/adamwidar-92/hushallet/issues/25))
+- [x] * Alla sysslor ska listas i en dagsvy och ge en översikt kring vad som behöver göras. ([#23](https://github.com/adamwidar-92/hushallet/issues/23))
+- [x] * Utöver namnet visas vem/vilka som gjort sysslan, hur många dagar sedan den gjordes senast samt om den är försenad. ([#24](https://github.com/adamwidar-92/hushallet/issues/24))
+- [x] * När en användare väljer en syssla visas beskrivningen och den kan med ett enkelt tryck markeras som gjord. ([#25](https://github.com/adamwidar-92/hushallet/issues/25))
 
 ### Statistik (6)
 
-- [ ] * En användare ska kunna se fördelningen av gjorda sysslor mellan användarna i hushållet. ([#27](https://github.com/adamwidar-92/hushallet/issues/27))
-- [ ] * Varje statistikvy visar total fördelning (inräknat vikter) samt fördelning per syssla. ([#28](https://github.com/adamwidar-92/hushallet/issues/28))
-- [ ] * Det ska finnas en statistikvy över "nuvarande vecka". ([#29](https://github.com/adamwidar-92/hushallet/issues/29))
+- [x] * En användare ska kunna se fördelningen av gjorda sysslor mellan användarna i hushållet. ([#27](https://github.com/adamwidar-92/hushallet/issues/27))
+- [x] * Varje statistikvy visar total fördelning (inräknat vikter) samt fördelning per syssla. ([#28](https://github.com/adamwidar-92/hushallet/issues/28))
+- [x] * Det ska finnas en statistikvy över "nuvarande vecka". ([#29](https://github.com/adamwidar-92/hushallet/issues/29))
 - [ ] Det ska finnas en statistikvy över "förra veckan".
 - [ ] Det ska finnas en statistikvy över "förra månaden".
 - [ ] Om det inte finns statistik för en vy ska den vyn inte visas.
