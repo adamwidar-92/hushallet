@@ -45,7 +45,7 @@ function RootNavigator() {
 
       <Stack.Protected guard={!session}>
         <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)/register" options={{ title: "Skapa konto" }} />
       </Stack.Protected>
     </Stack>
   );

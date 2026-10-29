@@ -53,10 +53,11 @@ export default function LoginScreen() {
           contentFit="contain"
         />
         <Text style={styles.title}>Hushållet</Text>
-        <Text style={styles.subtitle}>Logga in</Text>
+        <Text style={styles.subtitle}>Samsas om sysslorna hemma</Text>
 
         <TextField
-          placeholder="E-post"
+          label="E-post"
+          placeholder="namn@exempel.se"
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
@@ -64,6 +65,7 @@ export default function LoginScreen() {
           keyboardType="email-address"
         />
         <TextField
+          label="Lösenord"
           placeholder="Lösenord"
           value={password}
           onChangeText={setPassword}
@@ -74,7 +76,7 @@ export default function LoginScreen() {
 
         <PillButton
           title="Logga in"
-          icon="log-in"
+          variant="primary"
           onPress={handleLogin}
           disabled={loading}
         />
@@ -83,7 +85,8 @@ export default function LoginScreen() {
           style={styles.link}
           onPress={() => router.push("/(auth)/register")}
         >
-          <Text style={styles.linkText}>Har du inget konto? Registrera dig</Text>
+          <Text style={styles.linkHint}>Har du inget konto?</Text>
+          <Text style={styles.linkText}>Registrera dig</Text>
         </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -101,11 +104,12 @@ const styles = StyleSheet.create({
   logo: { width: 96, height: 96, alignSelf: "center", borderRadius: 20 },
   title: { ...typography.huge, color: colors.text, textAlign: "center" },
   subtitle: {
-    ...typography.subtitle,
+    ...typography.small,
     color: colors.textMuted,
     textAlign: "center",
     marginBottom: 12,
   },
-  link: { alignItems: "center", paddingVertical: 12 },
+  link: { alignItems: "center", paddingVertical: 12, gap: 4 },
+  linkHint: { ...typography.small, color: colors.textMuted },
   linkText: { ...typography.small, color: colors.text, textDecorationLine: "underline" },
 });

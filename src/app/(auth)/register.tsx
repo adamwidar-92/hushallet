@@ -2,17 +2,16 @@ import { PillButton } from "@/components/PillButton";
 import { TextField } from "@/components/TextField";
 import { useAuth } from "@/context/AuthContext";
 import { colors, typography } from "@/theme/colors";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 
 type Errors = {
@@ -38,8 +37,8 @@ export default function RegisterScreen() {
     if (!name.trim()) next.name = "Fyll i ditt namn.";
     if (!email.trim()) next.email = "Fyll i din e-post.";
     if (!password) next.password = "Fyll i ett lösenord.";
-    else if (password.length < 6)
-      next.password = "Lösenordet är för kort (minst 6 tecken).";
+    else if (password.length < 8)
+      next.password = "Lösenordet är för kort (minst 8 tecken).";
     if (password && password !== confirmPassword)
       next.confirm = "Lösenorden matchar inte.";
     setErrors(next);
@@ -73,23 +72,17 @@ export default function RegisterScreen() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <Image
-          source={require("../../../assets/images/logo.png")}
-          style={styles.logo}
-          contentFit="contain"
-        />
-        <Text style={styles.title}>Hushållet</Text>
-        <Text style={styles.subtitle}>Skapa konto</Text>
-
         <TextField
-          placeholder="Namn"
+          label="Namn"
+          placeholder="Anna Andersson"
           value={name}
           onChangeText={setName}
           autoComplete="name"
           error={errors.name}
         />
         <TextField
-          placeholder="E-post"
+          label="E-post"
+          placeholder="namn@exempel.se"
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
@@ -98,6 +91,7 @@ export default function RegisterScreen() {
           error={errors.email}
         />
         <TextField
+          label="Lösenord"
           placeholder="Lösenord"
           value={password}
           onChangeText={setPassword}
@@ -106,6 +100,7 @@ export default function RegisterScreen() {
           error={errors.password}
         />
         <TextField
+          label="Bekräfta lösenord"
           placeholder="Bekräfta lösenord"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
@@ -113,18 +108,16 @@ export default function RegisterScreen() {
           autoCapitalize="none"
           error={errors.confirm ?? errors.general}
         />
-
+        <Text style={styles.hint}>Minst 8 tecken.</Text>
+      </ScrollView>
+      <View style={styles.footer}>
         <PillButton
-          title="Registrera"
-          icon="user-plus"
+          title="Skapa konto"
+          variant="primary"
           onPress={handleRegister}
           disabled={loading}
         />
-
-        <Pressable style={styles.link} onPress={() => router.back()}>
-          <Text style={styles.linkText}>Har du redan ett konto? Logga in</Text>
-        </Pressable>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -133,18 +126,9 @@ const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: colors.background },
   container: {
     flexGrow: 1,
-    justifyContent: "center",
     padding: 12,
     gap: 12,
   },
-  logo: { width: 96, height: 96, alignSelf: "center", borderRadius: 20 },
-  title: { ...typography.huge, color: colors.text, textAlign: "center" },
-  subtitle: {
-    ...typography.subtitle,
-    color: colors.textMuted,
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  link: { alignItems: "center", paddingVertical: 12 },
-  linkText: { ...typography.small, color: colors.text, textDecorationLine: "underline" },
+  hint: { ...typography.caption, color: colors.textMuted },
+  footer: { padding: 12 },
 });
